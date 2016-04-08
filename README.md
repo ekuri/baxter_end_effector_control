@@ -1,4 +1,4 @@
-# ROS End Effector Teleoperation Control Package
+# ROS End Effector Control Package for Baxter
 
 ## About
 To know what this package is, pleased refer to the wiki of this package:
