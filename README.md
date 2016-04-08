@@ -1,7 +1,7 @@
 # ROS End Effector Teleoperation Control Package
 
 ## About
-To know what this pakage is, pleased refer to the wiki of this package:
+To know what this package is, pleased refer to the wiki of this package:
 
 https://github.com/birlrobotics/birl_baxter/wiki/end_effector_teleoperation_control_en
 
@@ -10,9 +10,8 @@ https://github.com/birlrobotics/birl_baxter/wiki/end_effector_teleoperation_cont
 
 ### Environment
 To successfully build this package, the following library of C++ is required:
-* libstdc++
-* liblapack
-* librt
+* stdc++
+* boost
 
 ### Denpendency
 The following package of ROS is required:
@@ -22,14 +21,19 @@ The following package of ROS is required:
 * geometry_msgs
 * visualization_msgs
 * interactive_markers
+* trac_ik (https://bitbucket.org/traclabs/trac_ik.git)
+
+To auto-fix the dependencies, you can try ```rosdep install --from-paths src --ignore-src --rosdistro indigo -y``` under the root directory of workspace that contain this package
 
 ### Build Package
-Simply run   
-><code>catkin_make</code>  
-
-under root directory of workspace that contain this package
+Simply run ```catkin_make``` under the root directory of workspace that contain this package
 
 ### Run
-Pleased refer to the wiki of this package:
+###### KDL marker control
+>```roslaunch baxter_end_effector_control end_effector_control.launch marker:=true```
 
-https://github.com/birlrobotics/birl_baxter/wiki/end_effector_teleoperation_control_en
+###### KDL keyboard control
+> ```roslaunch baxter_end_effector_control end_effector_control.launch keyboard:=true```
+
+###### Trac_IK marker control
+> ```roslaunch baxter_end_effector_control end_effector_control.launch trac_ik_marker:=true```
