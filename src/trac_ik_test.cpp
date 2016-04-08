@@ -74,20 +74,22 @@ void findIKSolution(const KDL::Frame &end_effector_pose, const std::string &limb
 
   // Create Nominal chain configuration midway between all joint limits
   KDL::JntArray nominal(chain.getNrOfJoints());
-
   for (uint j=0; j<nominal.data.size(); j++) {
     nominal(j) = (ll(j)+ul(j))/2.0;
   }
 
   KDL::JntArray result;
-
+  // result count
   int rc;
 
   rc=tracik_solver.CartToJnt(nominal,end_effector_pose,result);
   ROS_INFO("Found %d solution", rc);
 
   if (rc > 0) {
-
+      /* In the solution, the order of joint angles is s->e->w,
+       * while baxter_core_msgs::JointCommand requires the order of e->s->w.
+       * So we have to make some conversions.
+      */
       std::string jointNamesArray[] = {limbName + "_s0", limbName + "_s1", limbName + "_e0", limbName + "_e1",
           limbName + "_w0", limbName + "_w1", limbName + "_w2"};
       std::vector<std::string> jointNamesVector(chain.getNrOfJoints());
@@ -99,12 +101,14 @@ void findIKSolution(const KDL::Frame &end_effector_pose, const std::string &limb
       jointCommand.command.resize(chain.getNrOfJoints());
       for( std::size_t j = 0; j < chain.getNrOfJoints(); ++j)
           jointCommand.command[j] = result(j);
+
+      // The conversion has done, publishing the joint command
       jointCommandPublisher.publish(jointCommand);
   }
 }
 
 void callBack(const geometry_msgs::PoseStamped &callBackData) {
-  ROS_INFO("Callbacking...");
+  // ROS_INFO("Callbacking...");
   KDL::Frame end_effector_pose;
   tf::poseMsgToKDL(callBackData.pose, end_effector_pose);
   if (callBackData.header.frame_id.find("right") != std::string::npos) {
@@ -130,8 +134,6 @@ int main(int argc, char** argv)
     ROS_FATAL("Missing chain info in launch file");
     exit (-1);
   }
-
-
 
   ros::Subscriber subscriber = nodeHandle.subscribe("end_effector_command_position", 1, callBack);
 
