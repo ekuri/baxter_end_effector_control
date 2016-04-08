@@ -1,4 +1,4 @@
-# ROS End Effector Teleoperation Control Pakage
+# ROS End Effector Teleoperation Control Package
 
 ## About
 To know what this pakage is, pleased refer to the wiki of this package:
