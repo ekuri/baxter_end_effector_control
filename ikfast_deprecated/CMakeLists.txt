@@ -182,6 +182,30 @@ include_directories(
 add_executable(end_effector_marker_control src/end_effector_marker_control.cpp)
 target_link_libraries(end_effector_marker_control ${catkin_LIBRARIES})
 
+## build ikfastdemoright.cpp
+#add_executable(ikfastdemoright src/ikfastdemoright.cpp)
+#target_link_libraries(ikfastdemoright ${catkin_LIBRARIES} stdc++ lapack rt)
+
+## build ikfastdemoleft.cpp
+#add_executable(ikfastdemoleft src/ikfastdemoleft.cpp)
+#target_link_libraries(ikfastdemoleft ${catkin_LIBRARIES} stdc++ lapack rt)
+
+## end_effector_command_solver_ikfast.cpp
+#add_executable(end_effector_command_solver_ikfast src/end_effector_command_solver_ikfast.cpp)
+#target_link_libraries(end_effector_command_solver_ikfast ${catkin_LIBRARIES} stdc++ lapack rt)
+
+## end_effector_command_solver_ikfast_left.cpp
+#add_executable(end_effector_command_solver_ikfast_left src/end_effector_command_solver_ikfast_left.cpp)
+#target_link_libraries(end_effector_command_solver_ikfast_left ${catkin_LIBRARIES} stdc++ lapack rt)
+
+## end_effector_command_solver_ikfast_right.cpp
+#add_executable(end_effector_command_solver_ikfast_right src/end_effector_command_solver_ikfast_right.cpp)
+#target_link_libraries(end_effector_command_solver_ikfast_right ${catkin_LIBRARIES} stdc++ lapack rt)
+
+## end_effector_marker_control_ikfast.cpp
+#add_executable(end_effector_marker_control_ikfast src/end_effector_marker_control_ikfast.cpp)
+#target_link_libraries(end_effector_marker_control_ikfast ${catkin_LIBRARIES} stdc++ lapack rt)
+
 ## build basic_controls.cpp
 add_executable(basic_controls src/basic_controls.cpp)
 target_link_libraries(basic_controls ${catkin_LIBRARIES})

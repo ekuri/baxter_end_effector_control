@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="num_samples" default="1000" />
+  <arg name="num_samples" default="10000" />
   <arg name="chain_start" default="base" />
   <arg name="chain_end" default="left_gripper_base" />
   <arg name="timeout" default="0.005" />
