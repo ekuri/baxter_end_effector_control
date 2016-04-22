@@ -1,10 +1,7 @@
 # ROS End Effector Control Package for Baxter
 
 ## About
-To know what this package is, pleased refer to the wiki of this package:
-
-https://github.com/birlrobotics/birl_baxter/wiki/end_effector_teleoperation_control_en
-
+To know what this package is, pleased refer to the [wiki](https://github.com/ekuri/baxter_end_effector_control/wiki) of this package:
 
 ## Build and Run
 
@@ -21,7 +18,7 @@ The following package of ROS is required:
 * geometry_msgs
 * visualization_msgs
 * interactive_markers
-* trac_ik (https://bitbucket.org/traclabs/trac_ik.git)
+* [trac_ik](https://bitbucket.org/traclabs/trac_ik.git)
 
 To auto-fix the dependencies, you can try ```rosdep install --from-paths src --ignore-src --rosdistro indigo -y``` under the root directory of workspace that contain this package
 
