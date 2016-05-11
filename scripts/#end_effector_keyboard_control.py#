@@ -25,7 +25,7 @@ from geometry_msgs.msg import (
 
 commandPoseStampedPublisher = rospy.Publisher("end_effector_command_pose_stamped", PoseStamped, queue_size=1)
 
-# Default variables
+# Default variables for when the program starts. 
 current_limb = 'right'
 current_rotation = 'x'
 limbPoseStamped = PoseStamped()

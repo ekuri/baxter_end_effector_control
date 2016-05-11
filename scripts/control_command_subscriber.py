@@ -48,7 +48,7 @@ def callback(data):
 
 def subscribe():
 	rospy.Subscriber("/end_effector_command_pose_stamped", PoseStamped, callback)
-	rospy.Subscriber("end_effector_command_check", String, commandCheckCallback)
+	rospy.Subscriber("/end_effector_command_check", String, commandCheckCallback)
 	rospy.spin();
 	
 def main():
