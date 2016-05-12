@@ -26,11 +26,14 @@ To auto-fix the dependencies, you can try ```rosdep install --from-paths src --i
 Simply run ```catkin_make``` under the root directory of workspace that contain this package
 
 ### Run
-###### KDL marker control
->```roslaunch baxter_end_effector_control end_effector_control.launch marker:=true```
+#### Common
+Run following command before any control type lists bellow:
+>```roslaunch baxter_end_effector_control end_effector_control.launch```
 
-###### KDL keyboard control
-> ```roslaunch baxter_end_effector_control end_effector_control.launch keyboard:=true```
+Add argument: ```rviz:true``` to enable visualization, ```debug_output:true``` to enable debug output, ```solver:=kdl``` to use kdl ik solver
 
-###### Trac_IK marker control
-> ```roslaunch baxter_end_effector_control end_effector_control.launch trac_ik_marker:=true```
+###### marker control
+>```rosrun baxter_end_effector_control end_effector_marker_control```
+
+###### keyboard control
+> ```rosrun baxter_end_effector_control end_effector_keyboard_control.py```

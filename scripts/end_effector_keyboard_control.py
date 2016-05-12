@@ -1,14 +1,8 @@
 #!/usr/bin/env python
-"""
-Uses keyboard keys to update the cartesian pose goal for the end effector. The updates are published to the end_effector_command_pose_stamped topic, which can then be used by inverseKinematics routine, which in turns moves the arm. 
-"""
-import copy
-
 import rospy
 
 import baxter_interface
 import baxter_external_devices
-import tf
 
 from baxter_interface import CHECK_VERSION
 
@@ -37,6 +31,7 @@ def map_keyboard():
 	printHelper()
 	rospy.loginfo('press ? to print help')
 	while not rospy.is_shutdown():
+                #rospy.sleep(0.1)
 		c = baxter_external_devices.getch()
 		if c:
 			#catch Esc or ctrl-c
@@ -164,7 +159,7 @@ def printHelper():
 	print 'z ---> switch rotation control to z\n'
 	
 	print 'Current control State:'
-	printControlState()
+        printControlState()
 
 def printControlState():
 	print("\nControling %s limb ..." % current_limb)
