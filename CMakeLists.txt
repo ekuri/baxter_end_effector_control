@@ -43,10 +43,6 @@ include_directories(
 add_executable(end_effector_marker_control src/end_effector_marker_control.cpp)
 target_link_libraries(end_effector_marker_control ${catkin_LIBRARIES})
 
-## build basic_controls.cpp
-add_executable(basic_controls src/basic_controls.cpp)
-target_link_libraries(basic_controls ${catkin_LIBRARIES})
-
 ## build trac_ik_test.cpp
-add_executable(trac_ik_test src/trac_ik_test.cpp)
-target_link_libraries(trac_ik_test ${catkin_LIBRARIES})
+add_executable(end_effector_trac_ik_solver src/end_effector_trac_ik_solver.cpp)
+target_link_libraries(end_effector_trac_ik_solver ${catkin_LIBRARIES})

@@ -27,7 +27,6 @@ Point = collections.namedtuple('Point', ['x', 'y', 'z'])
 Quaternion = collections.namedtuple('Quaternion', ['x', 'y', 'z', 'w'])
 
 commandSolutionPublisher = rospy.Publisher("end_effector_command_solution", JointCommand, queue_size=1)
-commandCheckPublisher = rospy.Publisher("end_effector_command_check", String, queue_size=1)
 
 def callback(data):
 	#time_now = rospy.Time().now()
@@ -64,12 +63,9 @@ def callback(data):
 		inverseKinematicsSolutionJointCommand.names = limb.joint_names()
 		inverseKinematicsSolutionJointCommand.command = inverseKinematicsSolution
 		commandSolutionPublisher.publish(inverseKinematicsSolutionJointCommand)
-	
-	# publish to command subscriber to check compute
-	commandCheckPublisher.publish(String("done"))
 
 def subscribe():
-	rospy.Subscriber("end_effector_command_position", PoseStamped, callback)
+        rospy.Subscriber("end_effector_command_pose_stamped_checked", PoseStamped, callback)
 	#rospy.loginfo("end_effector_command_position subscribing...")
 	rospy.spin();
 

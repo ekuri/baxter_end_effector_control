@@ -1,4 +1,4 @@
-
+#include <string.h>
 #include <ros/ros.h>
 
 #include <interactive_markers/interactive_marker_server.h>
@@ -156,56 +156,72 @@ void make6DofMarker(std::string marker_limb, unsigned int interaction_mode, Pose
 }
 // %EndTag(6DOF)%
 
+
+void initMarker(bool fixState, const ros::NodeHandle &n) {
+    tf::TransformListener listener;
+    tf::StampedTransform transform;
+
+    ROS_INFO_STREAM("Initializing right marker");
+    Pose rightPose;
+    if (fixState) {
+        rightPose.position.x = 1;
+        rightPose.position.y = -0.5;
+        rightPose.position.z = 0.5;
+    } else {
+        while (n.ok()) {
+          try {
+            listener.lookupTransform("/base", "/right_gripper_base", ros::Time(0), transform);
+          } catch (tf::TransformException ex) {
+            ROS_INFO_STREAM("Initialize right marker failed, retrying...");
+            ros::Duration(1.0).sleep();
+            continue;
+          }
+          tf::pointTFToMsg(transform.getOrigin(), rightPose.position);
+          tf::quaternionTFToMsg(transform.getRotation(), rightPose.orientation);
+          break;
+        }
+    }
+    make6DofMarker( "right", visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE_3D,
+      rightPose, true);
+    ROS_INFO_STREAM("Initialized right marker");
+
+    ROS_INFO_STREAM("Initializing left marker");
+    Pose leftPose;
+    if (fixState) {
+        leftPose.position.x = 1;
+        leftPose.position.y = 0.5;
+        leftPose.position.z = 0.5;
+    } else {
+        while (n.ok()) {
+          try {
+            listener.lookupTransform("/base", "/left_gripper_base", ros::Time(0), transform);
+          } catch (tf::TransformException ex) {
+            ROS_INFO_STREAM("Initialize marker failed, retrying...");
+            ros::Duration(1.0).sleep();
+            continue;
+          }
+          tf::pointTFToMsg(transform.getOrigin(), leftPose.position);
+          tf::quaternionTFToMsg(transform.getRotation(), leftPose.orientation);
+          break;
+        }
+    }
+    make6DofMarker( "left", visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE_3D,
+      leftPose, true);
+    ROS_INFO_STREAM("Initialized left marker");
+}
+
 // %Tag(main)%
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "basic_controls");
+  ros::init(argc, argv, "end_effector_marker_control");
   ros::NodeHandle n;
-  pose_publisher = n.advertise<geometry_msgs::PoseStamped>("end_effector_command_position", 1);
+  pose_publisher = n.advertise<geometry_msgs::PoseStamped>("end_effector_command_pose_stamped", 1);
 
   server.reset( new interactive_markers::InteractiveMarkerServer("basic_controls","",false) );
 
   ros::Duration(0.1).sleep();
 
-  ROS_INFO_STREAM("Initializing right marker");
-
-  tf::TransformListener listener;
-  tf::StampedTransform transform;
-  while (n.ok()) {
-    try {
-      listener.lookupTransform("/base", "/right_gripper", ros::Time(0), transform);
-    } catch (tf::TransformException ex) {
-      ROS_INFO_STREAM("Initialize right marker failed, retrying...");
-      ros::Duration(1.0).sleep();
-      continue;
-    }
-    Pose rightPose;
-    tf::pointTFToMsg(transform.getOrigin(), rightPose.position);
-    tf::quaternionTFToMsg(transform.getRotation(), rightPose.orientation);
-    make6DofMarker( "right", visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE_3D,
-      rightPose, true);
-    break;
-  }
-  ROS_INFO_STREAM("Initialized right marker");
-
-  ROS_INFO_STREAM("Initializing left marker");
-  while (n.ok()) {
-    try {
-      listener.lookupTransform("/base", "/left_gripper", ros::Time(0), transform);
-    } catch (tf::TransformException ex) {
-      ROS_INFO_STREAM("Initialize marker failed, retrying...");
-      ros::Duration(1.0).sleep();
-      continue;
-    }
-    Pose leftPose;
-    tf::pointTFToMsg(transform.getOrigin(), leftPose.position);
-    tf::quaternionTFToMsg(transform.getRotation(), leftPose.orientation);
-    make6DofMarker( "left", visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE_3D,
-      leftPose, true);
-    break;
-  }
-
-  ROS_INFO_STREAM("Initialized left marker");
+  initMarker(argc == 2 && strcmp(argv[1], "fix_state") == 0, n);
 
   server->applyChanges();
 

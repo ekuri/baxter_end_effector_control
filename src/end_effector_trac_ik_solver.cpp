@@ -100,12 +100,8 @@ int main(int argc, char** argv)
   chain_start = "base";
   chain_end = "_gripper_base";
   urdf_param = "/robot_description";
-  if (chain_start=="" || chain_end=="") {
-    ROS_FATAL("Missing chain info in launch file");
-    exit (-1);
-  }
 
-  ros::Subscriber subscriber = nodeHandle.subscribe("end_effector_command_position", 1, callBack);
+  ros::Subscriber subscriber = nodeHandle.subscribe("end_effector_command_pose_stamped_checked", 1, callBack);
 
   jointCommandPublisher = nodeHandle.advertise<baxter_core_msgs::JointCommand>("end_effector_command_solution", 1);
 
