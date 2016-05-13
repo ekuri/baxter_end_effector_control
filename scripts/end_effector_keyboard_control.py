@@ -101,6 +101,7 @@ def checkCommand(command):
 		printControlState()
 		
 	## Caution!
+        limbPoseStamped.header.stamp = rospy.Time().now()
 	commandPoseStampedPublisher.publish(limbPoseStamped)
 
 def rotateLimb(clockwise):
@@ -189,7 +190,6 @@ def initLimbPose():
 			)
 	
 	limbPoseStamped.header.frame_id = current_limb
-	limbPoseStamped.header.stamp = rospy.Time().now()
 
 def main():
 	rospy.init_node("keyboard_control")

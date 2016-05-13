@@ -2,7 +2,7 @@
 
 import rospy
 from baxter_pykdl import baxter_kinematics
-from std_msgs.msg import String
+from std_msgs.msg import (String, Header)
 from geometry_msgs.msg import PoseStamped
 
 commandPositionPublisher = rospy.Publisher("end_effector_command_pose_stamped_checked", PoseStamped, queue_size=1)
@@ -14,14 +14,21 @@ def commandCheckCallback(data):
                 rospy.loginfo("command checked")
 		checked = True
 
+lastCheckTime = None
 def callback(data):
-        global checked
+        #global checked
 
-        if not checked:
-                rospy.loginfo('Uncheck command.')
+        #if not checked:
+                #rospy.loginfo('Uncheck command.')
                 #return
-        checked = False
-	commandPositionPublisher.publish(data)
+        #checked = False
+
+        global lastCheckTime
+        if lastCheckTime + rospy.Duration(0.1) > data.header.stamp:
+            rospy.loginfo('Command frequece too high. Ignored...')
+            return
+        lastCheckTime = data.header.stamp
+        commandPositionPublisher.publish(data)
 	
 
 def subscribe():
@@ -30,8 +37,9 @@ def subscribe():
 	rospy.spin();
 	
 def main():
-	rospy.init_node("ikfast_transform", anonymous=True)
-
+        global lastCheckTime
+        rospy.init_node("ikfast_transform", anonymous=True)
+        lastCheckTime = rospy.Time.now()
 	try:
 		subscribe()
 	except():

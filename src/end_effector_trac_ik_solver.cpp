@@ -105,7 +105,7 @@ int main(int argc, char** argv)
   //nodeHandle.param("chain_end", chain_end, std::string("left_gripper_base"));
   //nodeHandle.param("urdf_param", urdf_param, std::string("/robot_description"));
   chain_start = "base";
-  chain_end = "_gripper_base";
+  chain_end = "_gripper";
   urdf_param = "/robot_description";
 
   ros::Subscriber subscriber = nodeHandle.subscribe("end_effector_command_pose_stamped_checked", 1, callBack);
